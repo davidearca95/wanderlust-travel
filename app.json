@@ -1,18 +1,21 @@
 {
   "expo": {
     "name": "Wanderlust",
-    "slug": "travel-planner",
+    "slug": "wanderlust-travel",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "splash": {
-      "backgroundColor": "#1a1a2e"
+      "backgroundColor": "#0F0F1A"
     },
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.personal.wanderlust"
     },
-    "plugins": []
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#0F0F1A"
+      }
+    }
   }
 }
