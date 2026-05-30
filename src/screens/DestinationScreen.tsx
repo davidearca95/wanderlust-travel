@@ -1,45 +1,33 @@
 import React, { useState } from 'react';
 import {
-  View,
-  Text,
-  ScrollView,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Dimensions,
-  StatusBar,
+  View, Text, ScrollView, Image, TouchableOpacity, StyleSheet,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../navigation/AppNavigator';
+import { Screen } from '../../App';
 import { destinations } from '../data/destinations';
 import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
 
-const { width } = Dimensions.get('window');
-
-type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Destination'>;
-  route: RouteProp<RootStackParamList, 'Destination'>;
-};
-
 const MONTHS_IT = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 
-export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
-  const dest = destinations.find((d) => d.id === route.params.destinationId)!;
+type Props = {
+  destinationId: string;
+  navigate: (s: Screen) => void;
+  goBack: () => void;
+};
+
+export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, goBack }) => {
+  const dest = destinations.find((d) => d.id === destinationId)!;
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
 
   const isRecommended = (month: number) => dest.bestMonths.includes(month);
 
   return (
     <View style={styles.container}>
-      <StatusBar barStyle="light-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Hero Image */}
         <View style={styles.heroContainer}>
           <Image source={{ uri: dest.image }} style={styles.heroImage} />
           <View style={styles.heroOverlay} />
-          <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+          <TouchableOpacity style={styles.backButton} onPress={goBack}>
             <Ionicons name="arrow-back" size={24} color="#FFF" />
           </TouchableOpacity>
           <View style={styles.heroContent}>
@@ -49,8 +37,6 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </View>
 
-
-        {/* Quick Info Cards */}
         <View style={styles.infoRow}>
           <View style={styles.infoCard}>
             <Text style={styles.infoIcon}>💰</Text>
@@ -69,10 +55,9 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* Best Period Selector */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>📅 Quando andare</Text>
-          <Text style={styles.sectionSubtitle}>Periodo consigliato: {dest.bestPeriod}</Text>
+          <Text style={styles.sectionSubtitle}>Consigliato: {dest.bestPeriod}</Text>
           <View style={styles.monthsGrid}>
             {MONTHS_IT.map((month, idx) => {
               const monthNum = idx + 1;
@@ -88,15 +73,11 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
                   ]}
                   onPress={() => setSelectedMonth(monthNum)}
                 >
-                  <Text
-                    style={[
-                      styles.monthChipText,
-                      recommended && styles.monthChipTextRecommended,
-                      selected && styles.monthChipTextSelected,
-                    ]}
-                  >
-                    {month}
-                  </Text>
+                  <Text style={[
+                    styles.monthChipText,
+                    recommended && styles.monthChipTextRecommended,
+                    selected && styles.monthChipTextSelected,
+                  ]}>{month}</Text>
                   {recommended && <Text style={styles.monthDot}>✓</Text>}
                 </TouchableOpacity>
               );
@@ -104,18 +85,15 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </View>
 
-
-        {/* Gallery */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>📸 Gallery</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.gallery}>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {dest.gallery.map((img, idx) => (
               <Image key={idx} source={{ uri: img }} style={styles.galleryImage} />
             ))}
           </ScrollView>
         </View>
 
-        {/* Precautions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>⚠️ Precauzioni</Text>
           {dest.precautions.map((p, idx) => (
@@ -126,7 +104,6 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           ))}
         </View>
 
-        {/* Clothing */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>👕 Abbigliamento</Text>
           {dest.clothing.map((c, idx) => (
@@ -137,9 +114,8 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           ))}
         </View>
 
-        {/* Bookings */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>🎫 Prenotazioni consigliate</Text>
+          <Text style={styles.sectionTitle}>🎫 Prenotazioni</Text>
           {dest.bookingsNeeded.map((b, idx) => (
             <View key={idx} style={styles.listItem}>
               <Text style={styles.listBullet}>•</Text>
@@ -148,7 +124,6 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           ))}
         </View>
 
-        {/* Flight Info */}
         <View style={styles.section}>
           <View style={styles.flightCard}>
             <Text style={styles.flightIcon}>✈️</Text>
@@ -159,11 +134,10 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* CTA */}
         <View style={styles.ctaContainer}>
           <TouchableOpacity
             style={styles.ctaButton}
-            onPress={() => navigation.navigate('Itinerary', { destinationId: dest.id })}
+            onPress={() => navigate({ name: 'Itinerary', destinationId: dest.id })}
           >
             <Text style={styles.ctaText}>Vedi Itinerario Completo</Text>
             <Ionicons name="arrow-forward" size={20} color="#FFF" />
@@ -175,7 +149,6 @@ export const DestinationScreen: React.FC<Props> = ({ navigation, route }) => {
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: COLORS.background },
@@ -191,10 +164,7 @@ const styles = StyleSheet.create({
   heroEmoji: { fontSize: 36, marginBottom: SPACING.xs },
   heroTitle: { fontSize: 36, fontWeight: '800', color: '#FFF' },
   heroSubtitle: { fontSize: 15, color: 'rgba(255,255,255,0.85)', marginTop: 4 },
-  infoRow: {
-    flexDirection: 'row', paddingHorizontal: SPACING.lg,
-    marginTop: -30, gap: SPACING.sm,
-  },
+  infoRow: { flexDirection: 'row', paddingHorizontal: SPACING.lg, marginTop: -30, gap: SPACING.sm },
   infoCard: {
     flex: 1, backgroundColor: COLORS.surface, borderRadius: BORDER_RADIUS.md,
     padding: SPACING.md, alignItems: 'center', borderWidth: 1, borderColor: COLORS.surfaceLight,
@@ -217,7 +187,6 @@ const styles = StyleSheet.create({
   monthChipTextRecommended: { color: COLORS.primary },
   monthChipTextSelected: { color: '#FFF' },
   monthDot: { fontSize: 10, marginLeft: 4, color: COLORS.primary },
-  gallery: { marginTop: SPACING.sm },
   galleryImage: { width: 200, height: 140, borderRadius: BORDER_RADIUS.md, marginRight: SPACING.sm },
   listItem: { flexDirection: 'row', marginBottom: SPACING.sm, paddingRight: SPACING.lg },
   listBullet: { color: COLORS.primary, fontSize: 16, marginRight: SPACING.sm, lineHeight: 22 },
