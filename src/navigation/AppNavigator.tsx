@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen } from '../screens/HomeScreen';
 import { DestinationScreen } from '../screens/DestinationScreen';
 import { ItineraryScreen } from '../screens/ItineraryScreen';
@@ -12,7 +12,7 @@ export type RootStackParamList = {
   Itinerary: { destinationId: string; startDate?: string; endDate?: string };
 };
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export const AppNavigator = () => {
   return (
@@ -20,8 +20,7 @@ export const AppNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          contentStyle: { backgroundColor: COLORS.background },
-          animation: 'slide_from_right',
+          cardStyle: { backgroundColor: COLORS.background },
         }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />

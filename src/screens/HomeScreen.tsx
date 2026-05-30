@@ -11,7 +11,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { destinations } from '../data/destinations';
 import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
@@ -21,7 +21,7 @@ const { width } = Dimensions.get('window');
 const TILE_WIDTH = (width - SPACING.lg * 3) / 2;
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Home'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 };
 
 export const HomeScreen: React.FC<Props> = ({ navigation }) => {

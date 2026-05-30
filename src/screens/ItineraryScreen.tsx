@@ -10,7 +10,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { destinations, DayItinerary } from '../data/destinations';
@@ -19,7 +19,7 @@ import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
 const { width } = Dimensions.get('window');
 
 type Props = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Itinerary'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Itinerary'>;
   route: RouteProp<RootStackParamList, 'Itinerary'>;
 };
 
