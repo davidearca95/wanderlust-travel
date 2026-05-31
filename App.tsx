@@ -7,7 +7,7 @@ import { ItineraryScreen } from './src/screens/ItineraryScreen';
 export type Screen =
   | { name: 'Home' }
   | { name: 'Destination'; destinationId: string }
-  | { name: 'Itinerary'; destinationId: string };
+  | { name: 'Itinerary'; destinationId: string; days?: number };
 
 export default function App() {
   const [screen, setScreen] = useState<Screen>({ name: 'Home' });
@@ -29,6 +29,7 @@ export default function App() {
       {screen.name === 'Itinerary' && (
         <ItineraryScreen
           destinationId={screen.destinationId}
+          days={screen.days}
           goBack={() => navigate({ name: 'Destination', destinationId: screen.destinationId })}
         />
       )}

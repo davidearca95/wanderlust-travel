@@ -19,10 +19,12 @@ type Props = {
 export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, goBack }) => {
   const dest = destinations.find((d) => d.id === destinationId)!;
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [selectedDays, setSelectedDays] = useState(dest.itinerary.length);
   const [viewerVisible, setViewerVisible] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
 
   const isRecommended = (month: number) => dest.bestMonths.includes(month);
+  const maxDays = dest.itinerary.length;
 
   const openGallery = (index: number) => {
     setViewerIndex(index);
@@ -145,11 +147,30 @@ export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, go
         </View>
 
         <View style={styles.ctaContainer}>
+          {/* Day Selector */}
+          <Text style={styles.daySelectorTitle}>🗓️ Quanti giorni resti?</Text>
+          <View style={styles.daySelectorRow}>
+            {Array.from({ length: maxDays }, (_, i) => i + 1).map((num) => (
+              <TouchableOpacity
+                key={num}
+                style={[styles.dayChip, selectedDays === num && styles.dayChipActive]}
+                onPress={() => setSelectedDays(num)}
+              >
+                <Text style={[styles.dayChipText, selectedDays === num && styles.dayChipTextActive]}>
+                  {num}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <Text style={styles.daySelectorHint}>
+            {selectedDays} {selectedDays === 1 ? 'giorno' : 'giorni'} di itinerario
+          </Text>
+
           <TouchableOpacity
             style={styles.ctaButton}
-            onPress={() => navigate({ name: 'Itinerary', destinationId: dest.id })}
+            onPress={() => navigate({ name: 'Itinerary', destinationId: dest.id, days: selectedDays })}
           >
-            <Text style={styles.ctaText}>Vedi Itinerario Completo</Text>
+            <Text style={styles.ctaText}>Vedi Itinerario {selectedDays} Giorni</Text>
             <Ionicons name="arrow-forward" size={20} color="#FFF" />
           </TouchableOpacity>
         </View>
@@ -217,6 +238,17 @@ const styles = StyleSheet.create({
   flightTitle: { fontSize: 15, fontWeight: '600', color: COLORS.text },
   flightDetail: { fontSize: 13, color: COLORS.textSecondary, marginTop: 4 },
   ctaContainer: { paddingHorizontal: SPACING.lg, marginTop: SPACING.xl },
+  daySelectorTitle: { fontSize: 18, fontWeight: '700', color: COLORS.text, marginBottom: SPACING.md },
+  daySelectorRow: { flexDirection: 'row', flexWrap: 'wrap', gap: SPACING.sm, marginBottom: SPACING.sm },
+  dayChip: {
+    width: 44, height: 44, borderRadius: 22,
+    backgroundColor: COLORS.surface, alignItems: 'center', justifyContent: 'center',
+    borderWidth: 1, borderColor: COLORS.surfaceLight,
+  },
+  dayChipActive: { backgroundColor: COLORS.primary, borderColor: COLORS.primary },
+  dayChipText: { fontSize: 16, fontWeight: '700', color: COLORS.textSecondary },
+  dayChipTextActive: { color: '#FFF' },
+  daySelectorHint: { fontSize: 13, color: COLORS.textMuted, marginBottom: SPACING.lg },
   ctaButton: {
     backgroundColor: COLORS.primary, borderRadius: BORDER_RADIUS.lg,
     paddingVertical: SPACING.md + 4, flexDirection: 'row',

@@ -9,15 +9,17 @@ import { ImageViewer } from '../components/ImageViewer';
 
 type Props = {
   destinationId: string;
+  days?: number;
   goBack: () => void;
 };
 
-export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
+export const ItineraryScreen: React.FC<Props> = ({ destinationId, days, goBack }) => {
   const dest = destinations.find((d) => d.id === destinationId)!;
+  const visibleItinerary = days ? dest.itinerary.slice(0, days) : dest.itinerary;
   const [activeDay, setActiveDay] = useState(0);
   const [viewerVisible, setViewerVisible] = useState(false);
   const [viewerIndex, setViewerIndex] = useState(0);
-  const currentDay = dest.itinerary[activeDay];
+  const currentDay = visibleItinerary[activeDay];
 
   const openGallery = (index: number) => {
     setViewerIndex(index);
@@ -33,7 +35,7 @@ export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
         <View style={styles.headerCenter}>
           <Text style={styles.headerTitle}>{dest.emoji} {dest.name}</Text>
           <Text style={styles.headerSubtitle}>
-            Itinerario {dest.itinerary.length} giorni
+            Itinerario {visibleItinerary.length} giorni
           </Text>
         </View>
         <View style={{ width: 40 }} />
@@ -42,7 +44,7 @@ export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}
         style={styles.dayTabs} contentContainerStyle={styles.dayTabsContent}>
-        {dest.itinerary.map((day, idx) => (
+        {visibleItinerary.map((day, idx) => (
           <TouchableOpacity key={idx}
             style={[styles.dayTab, activeDay === idx && styles.dayTabActive]}
             onPress={() => setActiveDay(idx)}>
