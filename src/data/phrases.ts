@@ -1,0 +1,88 @@
+export interface Phrase {
+  italian: string;
+  local: string;
+  pronunciation: string;
+}
+
+export const phrases: Record<string, Phrase[]> = {
+  tokyo: [
+    { italian: 'Ciao', local: 'こんにちは', pronunciation: 'Konnichiwa' },
+    { italian: 'Grazie', local: 'ありがとう', pronunciation: 'Arigatou' },
+    { italian: 'Mi scusi', local: 'すみません', pronunciation: 'Sumimasen' },
+    { italian: 'Quanto costa?', local: 'いくらですか？', pronunciation: 'Ikura desu ka?' },
+    { italian: 'Il conto', local: 'お会計お願いします', pronunciation: 'Okaikei onegaishimasu' },
+    { italian: 'Buonissimo!', local: 'おいしい！', pronunciation: 'Oishii!' },
+    { italian: 'Dov\'è...?', local: '...はどこですか？', pronunciation: '...wa doko desu ka?' },
+    { italian: 'Aiuto!', local: '助けて！', pronunciation: 'Tasukete!' },
+    { italian: 'Sì / No', local: 'はい / いいえ', pronunciation: 'Hai / Iie' },
+  ],
+  paris: [
+    { italian: 'Buongiorno', local: 'Bonjour', pronunciation: 'Bon-giur' },
+    { italian: 'Grazie', local: 'Merci', pronunciation: 'Mersì' },
+    { italian: 'Per favore', local: 'S\'il vous plaît', pronunciation: 'Sil vu plè' },
+    { italian: 'Quanto costa?', local: 'Combien?', pronunciation: 'Combièn?' },
+    { italian: 'Il conto', local: 'L\'addition', pronunciation: 'Ladisión' },
+    { italian: 'Vorrei...', local: 'Je voudrais...', pronunciation: 'Giè vudrè...' },
+    { italian: 'Non parlo francese', local: 'Je ne parle pas français', pronunciation: 'Giè nè parl pa fransè' },
+    { italian: 'Aiuto!', local: 'Au secours!', pronunciation: 'O secur!' },
+  ],
+  barcelona: [
+    { italian: 'Ciao', local: 'Hola', pronunciation: 'Ola' },
+    { italian: 'Grazie', local: 'Gracias', pronunciation: 'Grasias' },
+    { italian: 'Per favore', local: 'Por favor', pronunciation: 'Por favor' },
+    { italian: 'Quanto costa?', local: '¿Cuánto cuesta?', pronunciation: 'Quanto cuesta?' },
+    { italian: 'Il conto', local: 'La cuenta', pronunciation: 'La cuenta' },
+    { italian: 'Una birra', local: 'Una cerveza', pronunciation: 'Una servesa' },
+    { italian: 'Non capisco', local: 'No entiendo', pronunciation: 'No entiendo' },
+    { italian: 'Aiuto!', local: '¡Ayuda!', pronunciation: 'Aiuda!' },
+  ],
+  bangkok: [
+    { italian: 'Ciao', local: 'สวัสดี', pronunciation: 'Sawadee krap/ka' },
+    { italian: 'Grazie', local: 'ขอบคุณ', pronunciation: 'Kop kun krap/ka' },
+    { italian: 'Quanto costa?', local: 'ราคาเท่าไร', pronunciation: 'Raka tao rai?' },
+    { italian: 'Troppo caro!', local: 'แพงไป', pronunciation: 'Paeng pai!' },
+    { italian: 'Non piccante', local: 'ไม่เผ็ด', pronunciation: 'Mai pet' },
+    { italian: 'Buono!', local: 'อร่อย', pronunciation: 'Aroi!' },
+    { italian: 'Aiuto!', local: 'ช่วยด้วย', pronunciation: 'Chuay duay!' },
+    { italian: 'Il conto', local: 'เช็คบิล', pronunciation: 'Check bin' },
+  ],
+  marrakech: [
+    { italian: 'Ciao/Pace', local: 'السلام عليكم', pronunciation: 'As-salamu alaykum' },
+    { italian: 'Grazie', local: 'شكرا', pronunciation: 'Shukran' },
+    { italian: 'Quanto costa?', local: 'بشحال؟', pronunciation: 'Bshhal?' },
+    { italian: 'Troppo caro!', local: 'غالي بزاف!', pronunciation: 'Ghali bzzaf!' },
+    { italian: 'No grazie', local: 'لا شكرا', pronunciation: 'La shukran' },
+    { italian: 'Buono!', local: 'بنين!', pronunciation: 'Bnin!' },
+    { italian: 'Per favore', local: 'عافاك', pronunciation: 'Afak' },
+    { italian: 'Aiuto!', local: 'عاونوني!', pronunciation: 'Aawnouni!' },
+  ],
+  zanzibar: [
+    { italian: 'Ciao', local: 'Jambo', pronunciation: 'Giambo' },
+    { italian: 'Come stai?', local: 'Habari?', pronunciation: 'Abari?' },
+    { italian: 'Grazie', local: 'Asante', pronunciation: 'Asante' },
+    { italian: 'Quanto costa?', local: 'Bei gani?', pronunciation: 'Bei gani?' },
+    { italian: 'Troppo caro', local: 'Ghali sana', pronunciation: 'Gali sana' },
+    { italian: 'Buono!', local: 'Nzuri!', pronunciation: 'Nzuri!' },
+    { italian: 'Nessun problema', local: 'Hakuna matata', pronunciation: 'Akuna matata' },
+    { italian: 'Aiuto!', local: 'Msaada!', pronunciation: 'Msaada!' },
+  ],
+  lisbon: [
+    { italian: 'Ciao', local: 'Olá', pronunciation: 'Olà' },
+    { italian: 'Grazie', local: 'Obrigado/a', pronunciation: 'Obrigàdu/a' },
+    { italian: 'Per favore', local: 'Por favor', pronunciation: 'Pur favòr' },
+    { italian: 'Quanto costa?', local: 'Quanto custa?', pronunciation: 'Quantu custa?' },
+    { italian: 'Un caffè', local: 'Uma bica', pronunciation: 'Uma bica' },
+    { italian: 'Il conto', local: 'A conta', pronunciation: 'A conta' },
+    { italian: 'Buono!', local: 'Delicioso!', pronunciation: 'Delisiòsu!' },
+    { italian: 'Aiuto!', local: 'Socorro!', pronunciation: 'Socorru!' },
+  ],
+  prague: [
+    { italian: 'Ciao', local: 'Ahoj', pronunciation: 'Ahoi' },
+    { italian: 'Grazie', local: 'Děkuji', pronunciation: 'Diekuyi' },
+    { italian: 'Una birra', local: 'Jedno pivo', pronunciation: 'Yedno pivo' },
+    { italian: 'Il conto', local: 'Účet prosím', pronunciation: 'Ucet prosim' },
+    { italian: 'Quanto costa?', local: 'Kolik to stojí?', pronunciation: 'Kolik to stoyì?' },
+    { italian: 'Buonissimo!', local: 'Výborné!', pronunciation: 'Vìborne!' },
+    { italian: 'Aiuto!', local: 'Pomoc!', pronunciation: 'Pomots!' },
+  ],
+};

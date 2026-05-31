@@ -8,6 +8,9 @@ import { Screen, AppContext } from '../../App';
 import { destinations } from '../data/destinations';
 import { dishes } from '../data/dishes';
 import { getChecklistForDestination } from '../data/checklists';
+import { timezones } from '../data/timezones';
+import { phrases } from '../data/phrases';
+import { links } from '../data/links';
 import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
 import { ImageViewer } from '../components/ImageViewer';
 
@@ -34,6 +37,9 @@ export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, go
   const maxDays = dest.itinerary.length;
   const destDishes = dishes[destinationId] || [];
   const checklistItems = getChecklistForDestination(destinationId);
+  const destTimezone = timezones[destinationId];
+  const destPhrases = phrases[destinationId] || [];
+  const destLinks = links[destinationId] || [];
 
   // Initialize checklist
   useEffect(() => {
@@ -177,6 +183,92 @@ export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, go
                     <Text style={styles.dishDesc}>{dish.description}</Text>
                   </View>
                   <Text style={styles.dishPrice}>{dish.price}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* ⏰ Fuso Orario */}
+        {destTimezone && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>⏰ Fuso Orario</Text>
+            <View style={styles.timezoneCard}>
+              <Text style={styles.tzOffset}>{destTimezone.offsetFromItaly}</Text>
+              <View style={styles.tzInfo}>
+                <Text style={styles.tzName}>{destTimezone.timezone}</Text>
+                <Text style={styles.tzNote}>{destTimezone.note}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* 💬 Frasario */}
+        {destPhrases.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>💬 Frasario ({dest.language.split('(')[0].trim()})</Text>
+            {destPhrases.map((phrase, idx) => (
+              <View key={idx} style={styles.phraseRow}>
+                <Text style={styles.phraseIt}>{phrase.italian}</Text>
+                <View style={styles.phraseRight}>
+                  <Text style={styles.phraseLocal}>{phrase.local}</Text>
+                  <Text style={styles.phrasePron}>🔊 {phrase.pronunciation}</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* 🗺️ Mappa Mentale */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>🗺️ Schema Viaggio</Text>
+          <View style={styles.mapCard}>
+            <View style={styles.mapStep}>
+              <View style={styles.mapDot}><Text style={styles.mapDotText}>1</Text></View>
+              <Text style={styles.mapStepText}>✈️ Volo dall'Italia ({dest.flightFromItaly.split('|')[1]?.trim()})</Text>
+            </View>
+            <View style={styles.mapLine} />
+            <View style={styles.mapStep}>
+              <View style={styles.mapDot}><Text style={styles.mapDotText}>2</Text></View>
+              <Text style={styles.mapStepText}>🏨 Check-in ({selectedDays} notti)</Text>
+            </View>
+            <View style={styles.mapLine} />
+            {dest.itinerary.slice(0, Math.min(selectedDays, 3)).map((day, idx) => (
+              <View key={idx}>
+                <View style={styles.mapStep}>
+                  <View style={styles.mapDot}><Text style={styles.mapDotText}>{idx + 3}</Text></View>
+                  <Text style={styles.mapStepText}>📍 Giorno {day.day}: {day.title}</Text>
+                </View>
+                {idx < Math.min(selectedDays, 3) - 1 && <View style={styles.mapLine} />}
+              </View>
+            ))}
+            {selectedDays > 3 && (
+              <>
+                <View style={styles.mapLine} />
+                <View style={styles.mapStep}>
+                  <View style={styles.mapDot}><Text style={styles.mapDotText}>…</Text></View>
+                  <Text style={styles.mapStepText}>+ altri {selectedDays - 3} giorni di avventura</Text>
+                </View>
+              </>
+            )}
+            <View style={styles.mapLine} />
+            <View style={styles.mapStep}>
+              <View style={[styles.mapDot, { backgroundColor: COLORS.success }]}><Text style={styles.mapDotText}>✓</Text></View>
+              <Text style={styles.mapStepText}>✈️ Ritorno in Italia</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* 🔗 Link Utili */}
+        {destLinks.length > 0 && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>🔗 Link & Prenotazioni</Text>
+            {destLinks.map((link, idx) => (
+              <View key={idx} style={styles.linkItem}>
+                <Text style={styles.linkEmoji}>{link.emoji}</Text>
+                <View style={styles.linkInfo}>
+                  <Text style={styles.linkTitle}>{link.title}</Text>
+                  <Text style={styles.linkUrl} numberOfLines={1}>{link.url.replace('https://', '').replace('www.', '')}</Text>
                 </View>
               </View>
             ))}
@@ -398,4 +490,29 @@ const styles = StyleSheet.create({
   dayChipTextActive: { color: '#FFF' },
   ctaButton: { backgroundColor: COLORS.primary, borderRadius: BORDER_RADIUS.lg, paddingVertical: SPACING.md + 4, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: SPACING.sm },
   ctaText: { fontSize: 17, fontWeight: '700', color: '#FFF' },
+  // Timezone
+  timezoneCard: { flexDirection: 'row', backgroundColor: COLORS.surface, borderRadius: BORDER_RADIUS.md, padding: SPACING.md, alignItems: 'center', borderWidth: 1, borderColor: COLORS.surfaceLight },
+  tzOffset: { fontSize: 28, fontWeight: '800', color: COLORS.accent, marginRight: SPACING.md, minWidth: 60, textAlign: 'center' },
+  tzInfo: { flex: 1 },
+  tzName: { fontSize: 14, fontWeight: '600', color: COLORS.text },
+  tzNote: { fontSize: 12, color: COLORS.textSecondary, marginTop: 4 },
+  // Phrases
+  phraseRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: SPACING.sm, borderBottomWidth: 1, borderBottomColor: COLORS.surfaceLight },
+  phraseIt: { fontSize: 14, color: COLORS.textSecondary, flex: 1 },
+  phraseRight: { flex: 1.5, alignItems: 'flex-end' },
+  phraseLocal: { fontSize: 15, fontWeight: '700', color: COLORS.text },
+  phrasePron: { fontSize: 12, color: COLORS.primary, marginTop: 2 },
+  // Map
+  mapCard: { backgroundColor: COLORS.surface, borderRadius: BORDER_RADIUS.md, padding: SPACING.md, borderWidth: 1, borderColor: COLORS.surfaceLight },
+  mapStep: { flexDirection: 'row', alignItems: 'center', gap: SPACING.sm },
+  mapDot: { width: 28, height: 28, borderRadius: 14, backgroundColor: COLORS.primary, alignItems: 'center', justifyContent: 'center' },
+  mapDotText: { fontSize: 12, fontWeight: '700', color: '#FFF' },
+  mapStepText: { fontSize: 13, color: COLORS.text, flex: 1 },
+  mapLine: { width: 2, height: 16, backgroundColor: COLORS.surfaceLight, marginLeft: 13 },
+  // Links
+  linkItem: { flexDirection: 'row', alignItems: 'center', paddingVertical: SPACING.sm, gap: SPACING.sm, borderBottomWidth: 1, borderBottomColor: COLORS.surfaceLight },
+  linkEmoji: { fontSize: 22 },
+  linkInfo: { flex: 1 },
+  linkTitle: { fontSize: 14, fontWeight: '600', color: COLORS.text },
+  linkUrl: { fontSize: 12, color: COLORS.primary, marginTop: 2 },
 });
