@@ -106,6 +106,11 @@ export const HomeScreen: React.FC<Props> = ({ navigate }) => {
           </View>
         )}
 
+        {/* Easter Egg */}
+        <TouchableOpacity style={styles.easterEgg} activeOpacity={0.6}>
+          <Text style={styles.easterEggText}>App by Arca</Text>
+        </TouchableOpacity>
+
         <View style={{ height: SPACING.xxl }} />
       </ScrollView>
     </View>
@@ -152,4 +157,16 @@ const styles = StyleSheet.create({
   emptyEmoji: { fontSize: 48, marginBottom: SPACING.md },
   emptyText: { fontSize: 18, fontWeight: '600', color: COLORS.text },
   emptySubtext: { fontSize: 14, color: COLORS.textSecondary, marginTop: SPACING.xs },
+  easterEgg: {
+    alignItems: 'center',
+    paddingVertical: SPACING.xl,
+    marginTop: SPACING.lg,
+  },
+  easterEggText: {
+    fontSize: 11,
+    color: COLORS.textMuted,
+    letterSpacing: 2,
+    textTransform: 'uppercase',
+    opacity: 0.5,
+  },
 });

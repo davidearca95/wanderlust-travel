@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Screen } from '../../App';
 import { destinations } from '../data/destinations';
 import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
+import { ImageViewer } from '../components/ImageViewer';
 
 const MONTHS_IT = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
 
@@ -18,8 +19,15 @@ type Props = {
 export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, goBack }) => {
   const dest = destinations.find((d) => d.id === destinationId)!;
   const [selectedMonth, setSelectedMonth] = useState<number | null>(null);
+  const [viewerVisible, setViewerVisible] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
 
   const isRecommended = (month: number) => dest.bestMonths.includes(month);
+
+  const openGallery = (index: number) => {
+    setViewerIndex(index);
+    setViewerVisible(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -89,7 +97,9 @@ export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, go
           <Text style={styles.sectionTitle}>📸 Gallery</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {dest.gallery.map((img, idx) => (
-              <Image key={idx} source={{ uri: img }} style={styles.galleryImage} />
+              <TouchableOpacity key={idx} onPress={() => openGallery(idx)} activeOpacity={0.8}>
+                <Image source={{ uri: img }} style={styles.galleryImage} />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -146,6 +156,13 @@ export const DestinationScreen: React.FC<Props> = ({ destinationId, navigate, go
 
         <View style={{ height: SPACING.xxl }} />
       </ScrollView>
+
+      <ImageViewer
+        images={dest.gallery}
+        visible={viewerVisible}
+        initialIndex={viewerIndex}
+        onClose={() => setViewerVisible(false)}
+      />
     </View>
   );
 };

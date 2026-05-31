@@ -5,6 +5,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { destinations } from '../data/destinations';
 import { COLORS, SPACING, BORDER_RADIUS } from '../constants/theme';
+import { ImageViewer } from '../components/ImageViewer';
 
 type Props = {
   destinationId: string;
@@ -14,7 +15,14 @@ type Props = {
 export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
   const dest = destinations.find((d) => d.id === destinationId)!;
   const [activeDay, setActiveDay] = useState(0);
+  const [viewerVisible, setViewerVisible] = useState(false);
+  const [viewerIndex, setViewerIndex] = useState(0);
   const currentDay = dest.itinerary[activeDay];
+
+  const openGallery = (index: number) => {
+    setViewerIndex(index);
+    setViewerVisible(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -88,7 +96,9 @@ export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
           <Text style={styles.gallerySectionTitle}>📸 Foto</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             {dest.gallery.map((img, idx) => (
-              <Image key={idx} source={{ uri: img }} style={styles.galleryImg} />
+              <TouchableOpacity key={idx} onPress={() => openGallery(idx)} activeOpacity={0.8}>
+                <Image source={{ uri: img }} style={styles.galleryImg} />
+              </TouchableOpacity>
             ))}
           </ScrollView>
         </View>
@@ -114,6 +124,13 @@ export const ItineraryScreen: React.FC<Props> = ({ destinationId, goBack }) => {
 
         <View style={{ height: 80 }} />
       </ScrollView>
+
+      <ImageViewer
+        images={dest.gallery}
+        visible={viewerVisible}
+        initialIndex={viewerIndex}
+        onClose={() => setViewerVisible(false)}
+      />
     </View>
   );
 };
