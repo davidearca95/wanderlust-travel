@@ -108,7 +108,7 @@ export const HomeScreen: React.FC<Props> = ({ navigate, ctx }) => {
     <View style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Ciao, viaggiatore! ✈️</Text>
+          <Text style={styles.greeting}>Ciao, Davide! ✈️</Text>
           <Text style={styles.title}>Dove vuoi andare?</Text>
         </View>
 
