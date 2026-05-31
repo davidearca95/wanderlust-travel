@@ -11,6 +11,7 @@ type Props = {
   destinationId: string;
   days?: number;
   goBack: () => void;
+  ctx?: any;
 };
 
 export const ItineraryScreen: React.FC<Props> = ({ destinationId, days, goBack }) => {
